@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Reference Include="ReimuAPI">
-      <HintPath>..\..\ReimuAPI\ReimuAPI\bin\Release\netcoreapp2.0\ReimuAPI.dll</HintPath>
+      <HintPath>./CNBlackListSoamChecker/lib/ReimuAPI.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
