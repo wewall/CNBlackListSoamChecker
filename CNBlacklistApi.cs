@@ -34,7 +34,7 @@ namespace CNBlackListSoamChecker
                     ApiKey = data.ApiKey;
                 }
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
                 return;
             }

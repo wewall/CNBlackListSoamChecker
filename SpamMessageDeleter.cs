@@ -71,7 +71,7 @@ namespace CNBlackListSoamChecker
 
             // AUTO DELETE SPAM MESSAGE START
             GroupCfg cfg = Temp.GetDatabaseManager().GetGroupConfig(BaseMessage.chat.id);
-            if (cfg.AutoDeleteSpamMessage == 0)
+            if (Temp.DisableBanList == false && cfg.AutoDeleteSpamMessage == 0)
             {
                 List<SpamMessage> spamMsgList = Temp.GetDatabaseManager().GetSpamMessageList();
                 foreach (SpamMessage smsg in spamMsgList)

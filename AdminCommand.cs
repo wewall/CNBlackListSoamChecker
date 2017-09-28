@@ -99,6 +99,15 @@ namespace CNBlackListSoamChecker
                     new SpamStringManager().Remove(RawMessage);
                     throw new StopProcessException();
                 case "/getspampoints":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new SpamStringManager().GetSpamPoints(RawMessage);
                     throw new StopProcessException();
                 case "/jsonencode":
