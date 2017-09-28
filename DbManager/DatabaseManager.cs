@@ -34,7 +34,7 @@ namespace CNBlackListSoamChecker.DbManager
             string banmsg = "";
             SendMessageResult result = null;
             int ReasonID = 0;
-            if (ChatID != 0 && MessageID != 0)
+            if (Temp.ReasonChannelID != 0 && ChatID != 0 && MessageID != 0)
             {
                 result = TgApi.getDefaultApiConnection().forwardMessage(Temp.ReasonChannelID, ChatID, MessageID);
                 if (result.ok)
@@ -43,46 +43,50 @@ namespace CNBlackListSoamChecker.DbManager
                     result = null;
                 }
             }
-            if (userinfo == null)
+            int ChannelReasonID = 0;
+            if (Temp.MainChannelID != 0)
             {
-                UserInfoRequest userinforeq = TgApi.getDefaultApiConnection().getChat(UserID);
-                if (userinforeq.ok)
+                if (userinfo == null)
                 {
-                    userinfo = userinforeq.result;
-                    banmsg = userinfo.GetUserTextInfo();
+                    UserInfoRequest userinforeq = TgApi.getDefaultApiConnection().getChat(UserID);
+                    if (userinforeq.ok)
+                    {
+                        userinfo = userinforeq.result;
+                        banmsg = userinfo.GetUserTextInfo();
+                    }
+                    else
+                    {
+                        finalResult = false;
+                        banmsg = "User ID: " + UserID;
+                    }
                 }
                 else
                 {
-                    finalResult = false;
-                    banmsg = "User ID: " + UserID;
+                    banmsg = userinfo.GetUserTextInfo();
                 }
+                string textlevel;
+                if (Level == 0)
+                {
+                    textlevel = "0 （严重）";
+                }
+                else if (Level == 1)
+                {
+                    textlevel = "1 （警告）";
+                }
+                else
+                {
+                    textlevel = Level + " （未知）";
+                }
+                banmsg += "\n\n已被封禁，封禁等级为: " + textlevel + "，该记录将于 " + GetTime.GetExpiresTime(Expires) + " 之后失效";
+                banmsg += "\n\n原因是：\n" + Reason;
+                if (Temp.ReasonChannelID != 0 && ReasonID != 0)
+                {
+                    banmsg += "\n\n参见：\nhttps://t.me/" + Temp.ReasonChannelName + "/" + ReasonID;
+                }
+                else if (Temp.ReasonChannelID != 0 && ChatID != 0 && MessageID != 0) finalResult = false;
+                ChannelReasonID = TgApi.getDefaultApiConnection().sendMessage(Temp.MainChannelID, banmsg).result.message_id;
+                ChangeDbBan(AdminID, UserID, Level, Expires, Reason, ChannelReasonID, ReasonID);
             }
-            else
-            {
-                banmsg = userinfo.GetUserTextInfo();
-            }
-            string textlevel;
-            if (Level == 0)
-            {
-                textlevel = "0 （严重）";
-            }
-            else if (Level == 1)
-            {
-                textlevel = "1 （警告）";
-            }
-            else
-            {
-                textlevel = Level + " （未知）";
-            }
-            banmsg += "\n\n已被封禁，封禁等级为: " + textlevel + "，该记录将于 " + GetTime.GetExpiresTime(Expires) + " 之后失效";
-            banmsg += "\n\n原因是：\n" + Reason;
-            if (ReasonID != 0)
-            {
-                banmsg += "\n\n参见：\nhttps://t.me/" + Temp.ReasonChannelName + "/" + ReasonID;
-            }
-            else if (ChatID != 0 && MessageID != 0) finalResult = false;
-            int ChannelReasonID = TgApi.getDefaultApiConnection().sendMessage(Temp.MainChannelID, banmsg).result.message_id;
-            ChangeDbBan(AdminID, UserID, Level, Expires, Reason, ChannelReasonID, ReasonID);
             CNBlacklistApi.PostToAPI(UserID, true, Level, Expires, Reason);
             return finalResult;
         }
@@ -95,34 +99,38 @@ namespace CNBlackListSoamChecker.DbManager
             )
         {
             bool finalResult = true;
-            string banmsg = "";
-            if (userinfo == null)
+            int ChannelReasonID = 0;
+            if (Temp.MainChannelID != 0)
             {
-                UserInfoRequest userinforeq = TgApi.getDefaultApiConnection().getChat(UserID);
-                if (userinforeq.ok)
+                string banmsg = "";
+                if (userinfo == null)
                 {
-                    userinfo = userinforeq.result;
-                    banmsg = userinfo.GetUserTextInfo();
+                    UserInfoRequest userinforeq = TgApi.getDefaultApiConnection().getChat(UserID);
+                    if (userinforeq.ok)
+                    {
+                        userinfo = userinforeq.result;
+                        banmsg = userinfo.GetUserTextInfo();
+                    }
+                    else
+                    {
+                        finalResult = false;
+                        banmsg = "User ID: " + UserID;
+                    }
                 }
                 else
                 {
-                    finalResult = false;
-                    banmsg = "User ID: " + UserID;
+                    banmsg = userinfo.GetUserTextInfo();
                 }
+                banmsg += "\n\n已被解封";
+                if (Reason != null)
+                {
+                    banmsg += "，原因是：\n" + Reason;
+                }
+                ChannelReasonID = TgApi.getDefaultApiConnection().sendMessage(
+                    Temp.MainChannelID,
+                    banmsg
+                    ).result.message_id;
             }
-            else
-            {
-                banmsg = userinfo.GetUserTextInfo();
-            }
-            banmsg += "\n\n已被解封";
-            if (Reason != null)
-            {
-                banmsg += "，原因是：\n" + Reason;
-            }
-            int ChannelReasonID = TgApi.getDefaultApiConnection().sendMessage(
-                Temp.MainChannelID,
-                banmsg
-                ).result.message_id;
             ChangeDbUnban(AdminID, UserID, Reason, ChannelReasonID);
             CNBlacklistApi.PostToAPI(UserID, false, 1, 0, Reason);
             return finalResult;

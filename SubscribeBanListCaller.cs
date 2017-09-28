@@ -16,6 +16,10 @@ namespace CNBlackListSoamChecker
 
         internal void CallGroups(BanUser user)
         {
+            if (Temp.DisableAdminTools)
+            {
+                return;
+            }
             if (user.Level == 1)
                 return;
             using (var db = new BlacklistDatabaseContext())

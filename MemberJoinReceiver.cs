@@ -15,13 +15,17 @@ namespace CNBlackListSoamChecker
 
         public CallbackMessage OnSupergroupMemberJoinReceive(TgMessage RawMessage, string JsonMessage, UserInfo JoinedUser)
         {
+            if (Temp.DisableBanList)
+            {
+                return new CallbackMessage();
+            }
             if (JoinedUser.id == TgApi.getDefaultApiConnection().getMe().id)
             {
                 TgApi.getDefaultApiConnection().sendMessage(
                     RawMessage.GetMessageChatInfo().id,
                     "欢迎使用 @CNBlackListBot\n" +
                     "请您进行一些设置：\n" +
-                    "1.在您的群组中给予 @CNBlackListBot 管理员权限\n" +
+                    "1.在您的群组中给予 @" + TgApi.getDefaultApiConnection().getMe().username + " 管理员权限\n" +
                     "2.使用 /soamenable 启用一些功能\n" +
                     "3.如果之前加入了 @DogeRobot ，建议您将其移除\n" +
                     "4.Enjoy it!\n\n" +

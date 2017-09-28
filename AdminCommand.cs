@@ -15,24 +15,87 @@ namespace CNBlackListSoamChecker
             switch (Command)
             {
                 case "/ban":
+                    if (Temp.DisableBanList || Temp.DisableAdminTools)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new BanUserCommand().Ban(RawMessage, JsonMessage, Command);
                     throw new StopProcessException();
                 case "/unban":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new UnbanUserCommand().Unban(RawMessage);
                     throw new StopProcessException();
                 case "/getspamstr":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new SpamStringManager().GetName(RawMessage);
                     return true;
                 case "/__getallspamstr":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new SpamStringManager().GetAllInfo(RawMessage);
                     return true;
                 case "/__kick":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     //new SpamStringManager().GetAllInfo(RawMessage);
                     return true;
                 case "/addspamstr":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new SpamStringManager().Add(RawMessage);
                     throw new StopProcessException();
                 case "/delspamstr":
+                    if (Temp.DisableBanList)
+                    {
+                        TgApi.getDefaultApiConnection().sendMessage(
+                            RawMessage.chat.id,
+                            "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                            RawMessage.message_id
+                            );
+                        break;
+                    }
                     new SpamStringManager().Remove(RawMessage);
                     throw new StopProcessException();
                 case "/getspampoints":

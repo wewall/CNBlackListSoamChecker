@@ -8,7 +8,6 @@ namespace CNBlackListSoamChecker.CommandObject
     {
         internal bool Unban(TgMessage RawMessage)
         {
-
             int banSpace = RawMessage.text.IndexOf(" ");
             if (banSpace == -1)
             {

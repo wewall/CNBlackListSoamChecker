@@ -13,7 +13,7 @@ namespace CNBlackListSoamChecker
                 "/soamdisable - 禁用一个功能\n" +
                 "/soamstatus - 查看当前群组开启了的功能" +
                 "/bkick - 将一个已在封禁列表中的用户从群组中移除出去\n";
-            string privateHelp = "/request_unban - 请求从封禁列表中移除";
+            string privateHelp = "";
             string sharedHelp = "/banstat - 看看自己有没有被 Ban";
             switch (MessageType)
             {

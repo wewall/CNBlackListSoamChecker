@@ -62,11 +62,29 @@ namespace CNBlackListSoamChecker
                         throw new Exception();
                     case "/soamstat":
                     case "/soamstatus":
+                        if (Temp.DisableBanList)
+                        {
+                            TgApi.getDefaultApiConnection().sendMessage(
+                                RawMessage.chat.id,
+                                "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                                RawMessage.message_id
+                                );
+                            break;
+                        }
                         if (cfg.AdminOnly == 0 && TgApi.getDefaultApiConnection().checkIsAdmin(RawMessage.chat.id, RawMessage.from.id) == false)
                             return new CallbackMessage() { StopProcess = true };
                         new SoamManager().SoamStatus(RawMessage);
                         break;
                     case "/bkick":
+                        if (Temp.DisableBanList)
+                        {
+                            TgApi.getDefaultApiConnection().sendMessage(
+                                RawMessage.chat.id,
+                                "非常抱歉，当前的编译已经禁用了封禁用户的功能，请您重新下载源码并编译以启用此功能。",
+                                RawMessage.message_id
+                                );
+                            break;
+                        }
                         if (RawMessage.reply_to_message == null)
                         {
                             TgApi.getDefaultApiConnection().sendMessage(RawMessage.chat.id, "请回复一条消息", RawMessage.message_id);
@@ -102,7 +120,7 @@ namespace CNBlackListSoamChecker
                                 TgApi.getDefaultApiConnection().sendMessage(
                                     RawMessage.chat.id,
                                     "无法移除，因为此用户的封禁级别没有达到要求，请您联系群组的管理员来处理。" +
-                                    "如果您认为这位用户将会影响大量群组，您亦可联系 @CNBlackList 提供的群组。",
+                                    "如果您认为这位用户将会影响大量群组，您亦可联系 @" + Temp.MainChannelName + " 提供的群组。",
                                     RawMessage.message_id
                                     );
                                 return new CallbackMessage();
@@ -113,7 +131,7 @@ namespace CNBlackListSoamChecker
                             TgApi.getDefaultApiConnection().sendMessage(
                                 RawMessage.chat.id,
                                 "无法移除，因为此用户没有被机器人列入全局封禁列表中，请您联系群组的管理员来处理。" +
-                                "如果您认为这位用户将会影响大量群组，您亦可联系 @CNBlackList 提供的群组。",
+                                "如果您认为这位用户将会影响大量群组，您亦可联系 @" + Temp.MainChannelName + " 提供的群组。",
                                 RawMessage.message_id
                                 );
                             return new CallbackMessage();

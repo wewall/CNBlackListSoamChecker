@@ -36,7 +36,6 @@ namespace CNBlackListSoamChecker
             }
             catch (System.Exception e)
             {
-                RAPI.GetExceptionListener().OnException(e);
                 return;
             }
             string realBan;
