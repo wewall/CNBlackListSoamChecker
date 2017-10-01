@@ -63,9 +63,9 @@ namespace CNBlackListSoamChecker.CommandObject
             if (enabled == "")
             {
                 enabled = "[[null]]\n\n请您使用 /soamenable [所需的功能] 来启用您需要的功能。\n" +
-                    "例如: \"/soamenable BlackList\" (不包含引号) 则可以启用由 @CNBlackList 提供的黑名单列表警告。\n" +
+                    "例如: \"/soamenable BlackList\" (不包含引号) 则可以启用由 @CNBlackListR 提供的黑名单列表警告。\n" +
                     "您也可以使用多个选项，例如: \"/soamenable BlackList AutoKick\" (不包含引号) " +
-                    "则可以启用由 @CNBlackList 提供的黑名单列表警告，在警告后还会将成员移出群组。\n\n" +
+                    "则可以启用由 @CNBlackListR 提供的黑名单列表警告，在警告后还会将成员移出群组。\n\n" +
                     "您可以使用 /soamstatus 查看当前群组开启或关闭了的功能。";
             }
             TgApi.getDefaultApiConnection().sendMessage(message.chat.id, "成功，开启了的功能有: " + enabled, message.message_id);
@@ -129,9 +129,9 @@ namespace CNBlackListSoamChecker.CommandObject
             if (enabled == "")
             {
                 enabled = "[[null]]\n\n请您使用 /soamdisable [所需的功能] 来禁用您需要的功能。\n" +
-                    "例如: \"/soamdisable BlackList\" (不包含引号) 则可以禁用由 @CNBlackList 提供的黑名单列表警告。\n" +
+                    "例如: \"/soamdisable BlackList\" (不包含引号) 则可以禁用由 @CNBlackListR 提供的黑名单列表警告。\n" +
                     "您也可以使用多个选项，例如: \"/soamdisable BlackList AutoKick\" (不包含引号) " +
-                    "则可以禁用由 @CNBlackList 提供的黑名单列表警告，并禁用在警告后将成员移出群组的功能。" +
+                    "则可以禁用由 @CNBlackListR 提供的黑名单列表警告，并禁用在警告后将成员移出群组的功能。" +
                     "您可以使用 /soamstatus 查看当前群组开启或关闭了的功能。";
             }
             TgApi.getDefaultApiConnection().sendMessage(message.chat.id, "成功，关闭了的功能有: " + enabled, message.message_id);
@@ -143,7 +143,7 @@ namespace CNBlackListSoamChecker.CommandObject
             GroupCfg gc = Temp.GetDatabaseManager().GetGroupConfig(message.chat.id);
             TgApi.getDefaultApiConnection().sendMessage(
                 message.chat.id,
-                "BlackList (by @CNBlackList ): " + (gc.BlackList == 0) + "\n" +
+                "BlackList (by @CNBlackListR ): " + (gc.BlackList == 0) + "\n" +
                 "AutoKick: " + (gc.AutoKick == 0) + "\n" +
                 "AutoDeleteSpamMessage: " + (gc.AutoDeleteSpamMessage == 0) + "\n" +
                 "AutoDeleteCommand: " + (gc.AutoDeleteCommand == 0) + "\n" +

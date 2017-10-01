@@ -23,7 +23,7 @@ namespace CNBlackListSoamChecker
             {
                 TgApi.getDefaultApiConnection().sendMessage(
                     RawMessage.GetMessageChatInfo().id,
-                    "欢迎使用 @CNBlackListBot\n" +
+                    "欢迎使用 @CNBlackListRBot\n" +
                     "请您进行一些设置：\n" +
                     "1.在您的群组中给予 @" + TgApi.getDefaultApiConnection().getMe().username + " 管理员权限\n" +
                     "2.使用 /soamenable 启用一些功能\n" +
